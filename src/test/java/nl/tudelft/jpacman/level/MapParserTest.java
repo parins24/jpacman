@@ -2,6 +2,7 @@ package nl.tudelft.jpacman.level;
 
 import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.npc.ghost.Blinky;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -40,7 +41,44 @@ public class MapParserTest {
         map.add("############");
         mapParser.parseMap(map);
         Mockito.verify(levelFactory, Mockito.times(1)).createGhost();
+
+
+        int countWall = 0;
+        int countGround = 0;
+        String groundCharacter = " .PG" ;
+        for(String i : map){
+            for(char j : i.toCharArray()){
+                if(j == '#'){
+                    countWall = countWall +1;
+                }
+                else if(groundCharacter.contains(String.valueOf(j))){
+                    countGround++;
+                }
+            }
+        }
+        Mockito.verify(boardFactory, Mockito.times(countGround)).createGround();
+        Mockito.verify(boardFactory, Mockito.times(countWall)).createWall();
     }
+    /**
+     * Test for the parseMap method (bad map).
+     */
+//    @Test
+//    public void testParseMapWrong1() {
+//        ADDYOURCODEHERE thrown =
+//            Assertions.assertThrows(ADDYOURCODEHERE.class, () -> {
+//                MockitoAnnotations.initMocks(this);
+//                assertNotNull(boardFactory);
+//                assertNotNull(levelFactory);
+//                MapParser mapParser = new MapParser(levelFactory, boardFactory);
+//                ArrayList<String> map = new ArrayList<>();
+//                /*
+//                Create a map with inconsistent size between
+//                each row or contain invalid characters
+//                */
+//                mapParser.parseMap(map);
+//            });
+//        Assertions.assertEquals(ADDYOURCODEHERE, thrown.getMessage());
+//    }
 
 
 }
